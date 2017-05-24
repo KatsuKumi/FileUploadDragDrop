@@ -50,7 +50,6 @@ function start(files){
         imgType = imgType[imgType.length - 1].toLowerCase(); // On utilise toLowerCase() pour éviter les extensions en majuscules
 
         if (allowedTypes.indexOf(imgType) != -1 && files[i].size < 1000000) {
-            document.querySelector('#fileinputlabel').innerHTML = "Upload..";
             createThumbnail(files[i]);
         }
         else{
