@@ -63,15 +63,15 @@ function createThumbnail(file) {
     reader.addEventListener('load', function() {
 
         var listElement = document.createElement('div');
-        listElement.className += "col s12 m2 imagepreview"
+        listElement.className += "col s12 m2 imagepreview";
 
         var card = document.createElement('div');
-        card.className += "card"
+        card.className += "card";
         listElement.appendChild(card);
 
         var cardimage = document.createElement('div');
-        cardimage.className += "card-image"
-        card.appendChild(cardimage)
+        cardimage.className += "card-image";
+        card.appendChild(cardimage);
 
         var imgElement = document.createElement('img');
         imgElement.src = this.result;
@@ -80,18 +80,18 @@ function createThumbnail(file) {
 
 
         var cardcontent = document.createElement('div');
-        cardcontent.className += "card-content"
-        card.appendChild(cardcontent)
+        cardcontent.className += "card-content";
+        card.appendChild(cardcontent);
 
         prev.insertBefore(listElement, document.querySelector('.imagepreview:first-child'));
 
-        upload(file, cardcontent);
+        upload(file, cardcontent, cardimage);
 
     });
     reader.readAsDataURL(file);
 
 }
-function upload(file, listitem)
+function upload(file, listitem, cardimage)
 {
 
     var barblock = document.createElement('div');
@@ -109,12 +109,40 @@ function upload(file, listitem)
         var span = document.createElement('span');
         span.innerHTML = e.target.response;
         listitem.appendChild(span);
-
+        var deletelink = document.createElement('a');
+        deletelink.className = "btn-floating halfway-fab waves-effect waves-light red deletebtn";
+        deletelink.setAttribute("data-target", e.target.response);
+        deletelink.href = "#";
+        deletelink.addEventListener('click', function(event){
+            deleteimg(this,event);
+        });
+        deletelink.innerHTML = '<i class="material-icons">delete</i>';
+        cardimage.appendChild(deletelink);
     });
     xhr.upload.addEventListener('progress', function(e) {
         progressbar.style.width = (e.loaded/e.total*100) + "%";
-    });
+        });
     var form = new FormData();
     form.append('file', file);
     xhr.send(form);
+}
+
+function deleteimg(e, event)
+{
+    event.preventDefault();
+    var img = e.getAttribute('data-target');
+    e.parentNode.parentNode.parentNode.remove();
+    var http = new XMLHttpRequest();
+    var url = "delete.php";
+    var params = "img=" + img;
+    http.open("POST", url, true);
+
+//Send the proper header information along with the request
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    http.onreadystatechange = function() {//Call a function when the state changes.
+        if(http.readyState == 4 && http.status == 200) {
+        }
+    }
+    http.send(params);
 }

@@ -62,6 +62,8 @@
                             <div class="card">
                                 <div class="card-image">
                                     <img src="img/<?php echo $fileinfo ?>">
+                                    <a class="btn-floating halfway-fab waves-effect waves-light red deletebtn" href="#" data-target="<?php  echo $fileinfo ?>" onclick="deleteimg(this, event);"><i class="material-icons">delete</i></a>
+
                                 </div>
                                 <div class="card-content">
                                     <p><?php echo $fileinfo ?></p>
